@@ -11,15 +11,15 @@ import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 
-public class LegendaView extends View {
+public class Legend extends View {
     private float mWidth;                   // Custom view width.
     private float mHeight;                  // Custom view height.
     private Paint mTextPaint;               // For text in the view.
-    private Paint mFigurePaint;               // For dial circle in the view.
+    private Paint mFigurePaint;             // For rect in the view.
 
-    ArrayList<Pais> listaPaises;
+    ArrayList<Country> listCountries;
 
-    public LegendaView(Context context, @Nullable AttributeSet attrs) {
+    public Legend(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         init();
     }
@@ -32,14 +32,13 @@ public class LegendaView extends View {
         mTextPaint.setTextAlign(Paint.Align.CENTER);
         mTextPaint.setTextSize(35f);
 
-        listaPaises = Pais.paises;
+        listCountries = Country.countries;
 
         // TODO: Set up onClick listener for this view.
 
     }
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        // Calculate the radius from the width and height.
         mWidth = w;
         mHeight = h;
     }
@@ -50,17 +49,17 @@ public class LegendaView extends View {
 
         float x = mWidth/4;
         float y = mHeight/8;
-        float ancho = 20;
+        float side = 20;
 
-        String str = "";
+        String text = "";
 
-        for(int i=0; i < listaPaises.size(); i++){
+        for(int i = 0; i < listCountries.size(); i++){
 
-            mFigurePaint.setColor(Color.parseColor(listaPaises.get(i).getColor()));
-            canvas.drawRect(x-ancho,y-ancho,x+ancho,y+ancho,mFigurePaint);
+            mFigurePaint.setColor(Color.parseColor(listCountries.get(i).getColor()));
+            canvas.drawRect(x-side,y-side,x+side,y+side,mFigurePaint);
 
-            str = listaPaises.get(i).getNombre();
-            canvas.drawText(str, 0, str.length(), x+120, y+10, mTextPaint);
+            text = listCountries.get(i).getName();
+            canvas.drawText(text, 0, text.length(), x+120, y+10, mTextPaint);
 
             y+=60;
         }

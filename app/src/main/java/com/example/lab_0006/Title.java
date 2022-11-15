@@ -9,12 +9,13 @@ import android.view.View;
 
 import androidx.annotation.Nullable;
 
-public class TituloView extends View {
-
+public class Title extends View {
+    private float mWidth;
+    private float mHeight;
     private String text;
     private Paint mTextPaint;
 
-    public TituloView(Context context, @Nullable AttributeSet attrs) {
+    public Title(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         init();
     }
@@ -31,9 +32,18 @@ public class TituloView extends View {
     }
 
     @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        mWidth = w;
+        mHeight = h;
+    }
+
+    @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+
+        float x = mWidth / 2;
+        float y = mHeight * 2 / 3;
         text = "Tasa de Natalidad";
-        canvas.drawText(text, 0,text.length(),500,50,mTextPaint);
+        canvas.drawText(text, 0,text.length(),x,y,mTextPaint);
     }
 }

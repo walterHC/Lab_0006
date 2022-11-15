@@ -10,6 +10,8 @@ import android.view.View;
 
 import androidx.annotation.Nullable;
 
+import com.example.lab_0006.Country;
+
 import java.util.ArrayList;
 
 public class CustomView extends View {
@@ -21,8 +23,7 @@ public class CustomView extends View {
 
     //double [] datos = {5, 10, 2.5, 5, 8.2, 10, 6.1, 4.7, 6, 10,1.5,9,0.1};
     //11 datos
-    private ArrayList<String> countryList;
-    private ArrayList<Double> dataList;
+    private ArrayList<Country> countryList;
 
     public CustomView(Context context) {
         super(context);
@@ -46,8 +47,7 @@ public class CustomView extends View {
         mPaintSquare = new Paint(Paint.ANTI_ALIAS_FLAG);
         textPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         linesPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        dataList = new ArrayList<>();
-        countryList = new ArrayList<>();
+        countryList = Country.countries;
     }
 
     @Override
@@ -57,7 +57,7 @@ public class CustomView extends View {
         textPaint.setColor(Color.BLACK);
         linesPaint.setColor(Color.MAGENTA);
 
-        int totalValues = dataList.size();
+        int totalValues = countryList.size();
         double maxValue = findMaxValue();
         double barWidth = (getWidth() * 0.45) / (totalValues + 1);
         //double spacing = barWidth/totalValues;
@@ -89,7 +89,7 @@ public class CustomView extends View {
             mRectSquare.left = x;
             mRectSquare.top = y;
             mRectSquare.right = (int)(mRectSquare.left + barWidth);
-            double barHeight = -((dataList.get(i) * y) / granularity);
+            double barHeight = -((countryList.get(i).getBirthRate() * y) / granularity);
             mRectSquare.bottom = (int) (mRectSquare.top + barHeight);
             x += 2* barWidth;
             paddingBars = (float) (x-1.4* barWidth);
@@ -97,15 +97,15 @@ public class CustomView extends View {
             //canvas.drawText(paises.get(i), (float) (paddingBars), (float) (screenHeight), textPaint);
             canvas.drawRect(mRectSquare, mPaintSquare);
             canvas.rotate((float) -90, (float) (paddingBars), (float) (screenHeight));
-            canvas.drawText(countryList.get(i), (float) (paddingBars), (float) (screenHeight), textPaint);
+            canvas.drawText(countryList.get(i).getName(), (float) (paddingBars), (float) (screenHeight), textPaint);
             canvas.rotate(90F, (float) (paddingBars), (float) (screenHeight));
         }
     }
 
     protected double findMaxValue(){
         double maxValue=0;
-        for(int i = 0; i < dataList.size(); i++)
-            maxValue = (maxValue < dataList.get(i)) ? dataList.get(i) : maxValue;
+        for(int i = 0; i < countryList.size(); i++)
+            maxValue = (maxValue < countryList.get(i).getBirthRate()) ? countryList.get(i).getBirthRate() : maxValue;
 
         return maxValue;
     }
@@ -114,8 +114,4 @@ public class CustomView extends View {
         return (int)(maxValue + (totalValues - (maxValue % totalValues)));
     }
 
-    public void addData(String country, double value){
-        countryList.add(country);
-        dataList.add(value);
-    }
 }
